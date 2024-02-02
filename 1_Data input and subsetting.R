@@ -96,6 +96,22 @@ stby(env, env$Treatment.full, descr)
 # Univariate visualisations and Hypothesis tests for categorical predictors #
 #############################################################################
 
+# Linear mixed effects model
+
+library(lmerTest)
+
+sobs.lmmFit <- lmer(Sobs ~ Treatment.full + 1|(Pot.number), data = env)
+  
+anova(sobs.lmmFit)
+
+summary(sobs.lmmFit)
+emmeans(sobs.lmmFit, list(pairwise ~ Treatment.full), adjust = "fdr")
+
+#cld(lsmeans((lmer(Betagluc ~ Herbicidei + factor(Day) + Herbicidei:factor(Day) + (1|rep) , data = enzymes.m)), 
+#            ~ pairwise ~ Herbicidei + factor(Day) + Herbicidei:factor(Day) , 
+#            Letters = letters, 
+#            adjust = "fdr"))
+
 # Sobs
 ### Determine whether alpha diversity differs between land uses using ANOVA and posthoc
 mod1 <- aov(Sobs ~ Treatment.full, data = env)
